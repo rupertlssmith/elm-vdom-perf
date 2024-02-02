@@ -1,0 +1,8 @@
+#include "../_deps/asm-dom-src/src/cpp/asm-dom.hpp"
+#include <emscripten/val.h>
+#include <functional>
+#include <string>
+
+using namespace asmdom;
+
+VNode *current_view = nullptr;

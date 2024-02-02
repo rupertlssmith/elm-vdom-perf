@@ -12,15 +12,16 @@ project(asm-dom-cmake
 include(cmake/release-mode.cmake)
 
 # Install gccx if needed. Defines the gccx(..) function to transpile cpx to cpp.
-#include(cmake/gccx.cmake)
+include(cmake/gccx.cmake)
 
 # Add the asm-dom library.
 include(cmake/asm-dom.cmake)
 
-#gccx(src/main.cpx)
+gccx(src/view.cpx)
 add_executable(main src/main.cpp)
+add_library(view src/view.cpp)
 set_property(TARGET main PROPERTY CXX_STANDARD 11)
-target_link_libraries(main PRIVATE asm-dom)
+target_link_libraries(main PRIVATE view asm-dom)
 
 # Copy the index.html file into the build directory
 configure_file(
