@@ -4,19 +4,21 @@
 #include <string>
 #include "view.hpp"
 
+using namespace asmdom;
+
 int i = 1;
 
 bool Decrease(emscripten::val) {
     i--;
 
-    Render();
+    view();
     return true;
 }
 
 bool Increase(emscripten::val) {
     i++;
 
-    Render();
+    view();
     return true;
 }
 
@@ -42,7 +44,7 @@ Model model = {
         .visibility = "All"
 };
 
-
+VNode *current_view = nullptr;
 
 int main() {
     // Initialize asm-dom.
@@ -56,7 +58,10 @@ int main() {
     asmdom::patch(root, current_view);
 
     // Update the virtual dom.
-    Render();
+    VNode* new_node = view();
+
+    asmdom::patch(current_view, new_node);
+    current_view = new_node;
 
     return 0;
 };

@@ -1,8 +1,8 @@
 #ifndef ASM_DOM_CMAKE_VIEW_HPP
 #define ASM_DOM_CMAKE_VIEW_HPP
 
-extern asmdom::VNode *current_view;
+#include "asm-dom.hpp"
 
-void Render();
+asmdom::VNode* view();
 
 #endif //ASM_DOM_CMAKE_VIEW_HPP

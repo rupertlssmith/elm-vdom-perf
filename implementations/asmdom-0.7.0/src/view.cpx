@@ -5,8 +5,6 @@
 
 using namespace asmdom;
 
-VNode *current_view = nullptr;
-
 VNode* viewInput() {
     asmdom::VNode* new_node =
       <header class="header">
@@ -65,7 +63,7 @@ VNode* viewControls() {
     return new_node;
 }
 
-void Render() {
+VNode* view() {
     // The main view.
     asmdom::VNode* new_node =
       <div id="root" class="todomvc-wrapper">
@@ -76,7 +74,6 @@ void Render() {
        </section>
       </div>;
 
-    asmdom::patch(current_view, new_node);
-    current_view = new_node;
+    return new_node;
 }
 
