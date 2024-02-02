@@ -2,6 +2,7 @@
 #include <emscripten/val.h>
 #include <functional>
 #include <string>
+#include "model.hpp"
 
 using namespace asmdom;
 
@@ -63,7 +64,7 @@ VNode* viewControls() {
     return new_node;
 }
 
-VNode* view() {
+VNode* view(Model& model) {
     // The main view.
     asmdom::VNode* new_node =
       <div id="root" class="todomvc-wrapper">

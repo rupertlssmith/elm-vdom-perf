@@ -3,39 +3,11 @@
 #include <functional>
 #include <string>
 #include "view.hpp"
+#include "model.hpp"
 
 using namespace asmdom;
 
 int i = 1;
-
-bool Decrease(emscripten::val) {
-    i--;
-
-    view();
-    return true;
-}
-
-bool Increase(emscripten::val) {
-    i++;
-
-    view();
-    return true;
-}
-
-// State.
-struct Entry {
-    std::string description;
-    bool completed;
-    bool editing;
-    int id;
-};
-
-struct Model {
-    std::vector<Entry> entries;
-    std::string field;
-    int uid;
-    std::string visibility;
-};
 
 Model model = {
         .entries = std::vector<Entry>(),
@@ -45,6 +17,22 @@ Model model = {
 };
 
 VNode *current_view = nullptr;
+
+bool Decrease(emscripten::val) {
+    i--;
+
+    view(model);
+    return true;
+}
+
+bool Increase(emscripten::val) {
+    i++;
+
+    view(model);
+    return true;
+}
+
+
 
 int main() {
     // Initialize asm-dom.
@@ -58,7 +46,7 @@ int main() {
     asmdom::patch(root, current_view);
 
     // Update the virtual dom.
-    VNode* new_node = view();
+    VNode* new_node = view(model);
 
     asmdom::patch(current_view, new_node);
     current_view = new_node;
