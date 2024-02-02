@@ -6,7 +6,7 @@
 
 using namespace asmdom;
 
-VNode* viewInput() {
+VNode* viewInput(std::string task) {
     asmdom::VNode* new_node =
       <header class="header">
         <h1>todos</h1>
@@ -14,7 +14,7 @@ VNode* viewInput() {
             class="new-todo"
             placeholder="What needs to be done?"
             autofocus="true"
-            value="All"
+            value={task}
             name="newTodo">
          </input>
       </header>;
@@ -22,9 +22,38 @@ VNode* viewInput() {
     return new_node;
 }
 
-VNode* viewEntries() {
+bool isVisible(std::string visibility, Entry& entry) {
+    if (visibility == "Completed")
+        return entry.completed;
+    else if (visibility == "Active")
+        return !entry.completed;
+    else
+        return true;
+}
+
+VNode* viewEntry(Entry& todo) {
     asmdom::VNode* new_node =
-      <section class="main">
+      <li>
+        <div class="view">
+            <input class="toggle" type_="checkbox" checked={todo.completed}/>
+            <label>{todo.description}</label>
+            <button class="destroy"/>
+        </div>
+        <input
+            class="edit"
+            value={todo.description}
+            name="title">
+        </input>
+      </li>;
+
+    return new_node;
+}
+
+VNode* viewEntries(std::string visibility, std::vector<Entry> entries) {
+    std::string cssVisibility = (entries.size() > 0) ? "visibility:visible" : "visibility:hidden";
+
+    asmdom::VNode* new_node =
+      <section class="main" style={cssVisibility}>
          <input
             class="toggle-all"
             type="checkbox"
@@ -56,6 +85,8 @@ VNode* viewEntries() {
     return new_node;
 }
 
+
+
 VNode* viewControls() {
     asmdom::VNode* new_node =
       <footer class="footer" hidden="false">
@@ -69,8 +100,8 @@ VNode* view(Model& model) {
     asmdom::VNode* new_node =
       <div id="root" class="todomvc-wrapper">
         <section class="todoapp">
-          {viewInput()}
-          {viewEntries()}
+          {viewInput(model.field)}
+          {viewEntries(model.visibility, model.entries)}
           {viewControls()}
        </section>
       </div>;
