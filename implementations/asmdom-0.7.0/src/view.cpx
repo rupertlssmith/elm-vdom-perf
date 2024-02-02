@@ -6,3 +6,77 @@
 using namespace asmdom;
 
 VNode *current_view = nullptr;
+
+VNode* viewInput() {
+    asmdom::VNode* new_node =
+      <header class="header">
+        <h1>todos</h1>
+        <input
+            class="new-todo"
+            placeholder="What needs to be done?"
+            autofocus="true"
+            value="All"
+            name="newTodo">
+         </input>
+      </header>;
+
+    return new_node;
+}
+
+VNode* viewEntries() {
+    asmdom::VNode* new_node =
+      <section class="main">
+         <input
+            class="toggle-all"
+            type="checkbox"
+            name="toggle">
+         </input>
+         <label for="toggle-all">Mark all as complete</label>
+         <ul>
+            <li class="completed editing">
+               <div class="view">
+                  <input
+                     class="toggle"
+                     type="checkbox">
+                  </input>
+                  <label>todo description
+                  </label>
+                  <button class="destroy">
+                  </button>
+               </div>
+               <input
+                  class="edit"
+                  value="todo description"
+                  name="title"
+                  id="todo-1">
+               </input>
+            </li>
+         </ul>
+      </section>;
+
+    return new_node;
+}
+
+VNode* viewControls() {
+    asmdom::VNode* new_node =
+      <footer class="footer" hidden="false">
+      </footer>;
+
+    return new_node;
+}
+
+void Render() {
+    // The main view.
+    asmdom::VNode* new_node =
+      <div id="root" class="todomvc-wrapper">
+        <section class="todoapp">
+          {viewInput()}
+          {viewEntries()}
+          {viewControls()}
+       </section>
+      </div>;
+
+    asmdom::patch(current_view, new_node);
+    current_view = new_node;
+}
+
